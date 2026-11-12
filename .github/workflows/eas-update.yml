@@ -1,0 +1,26 @@
+name: Publish EAS Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: Short release note shown in EAS
+        required: true
+        type: string
+        default: "NexKey update"
+
+jobs:
+  publish:
+    name: Publish production OTA update
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Publish update
+        run: npx eas-cli@latest update --channel production --message "${{ inputs.message }}" --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
