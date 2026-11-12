@@ -24,7 +24,14 @@
     "updates": {
       "enabled": true,
       "checkAutomatically": "ON_LOAD",
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/1b5a5be0-18d9-4825-a6ae-37bedb173a1a"
+    },
+    "owner": "eleddin01",
+    "extra": {
+      "eas": {
+        "projectId": "1b5a5be0-18d9-4825-a6ae-37bedb173a1a"
+      }
     }
   }
 }
