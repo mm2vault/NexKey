@@ -2,7 +2,7 @@
   "expo": {
     "name": "NexKey",
     "slug": "nexkey",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -15,7 +15,16 @@
       "softwareKeyboardLayoutMode": "pan"
     },
     "plugins": [
-      "./plugins/withNexKeyKeyboard"
-    ]
+      "./plugins/withNexKeyKeyboard",
+      "expo-updates"
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    }
   }
 }
