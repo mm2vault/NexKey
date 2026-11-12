@@ -13,6 +13,9 @@
     "android": {
       "package": "com.mm2vault.nexkey",
       "softwareKeyboardLayoutMode": "pan"
-    }
+    },
+    "plugins": [
+      "./plugins/withNexKeyKeyboard"
+    ]
   }
 }
