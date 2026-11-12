@@ -18,7 +18,8 @@ The React Native app includes a live keyboard preview and an editable Theme Stud
 - Suggestions and on-device typing preferences
 - Optional AI writing tools with explicit consent
 - Free and Premium tiers
-- In-app OTA update check/download/restart flow (EAS project configuration and publishing still required) 
+- In-app OTA update check/download/restart flow (EAS project linking and publishing still required)
+- EAS Build profiles and GitHub Actions workflows for APK builds and OTA publishing (Expo account/token setup required)
 - Store/installer updates for native keyboard engine changes
 
 ## Run the app
@@ -39,4 +40,4 @@ For native development builds, use the platform-specific Expo / React Native too
 - Android app updates should be delivered through Google Play or the chosen trusted distribution channel. iOS updates are distributed through the App Store. NexKey will not silently install APKs or bypass store controls.
 - Typing content must not be transmitted to NexKey servers by default. Remote AI features will require clear opt-in.
 
-See [Architecture](docs/architecture.md), [Privacy](docs/privacy.md) and [Roadmap](docs/roadmap.md).
+See [Architecture](docs/architecture.md), [Privacy](docs/privacy.md), [Roadmap](docs/roadmap.md), [in-app updates](docs/in-app-updates.md) and the [EAS setup guide](docs/eas-setup.md).
