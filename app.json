@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "NexKey",
+    "slug": "nexkey",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mm2vault.nexkey"
+    },
+    "android": {
+      "package": "com.mm2vault.nexkey",
+      "softwareKeyboardLayoutMode": "pan"
+    }
+  }
+}
