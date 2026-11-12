@@ -81,12 +81,12 @@ class NexKeyInputMethodService : InputMethodService() {
                 gravity = Gravity.CENTER
                 orientation = LinearLayout.HORIZONTAL
             }
-            if (index == 2) line.addView(makeKey("⇧", 0xFF7560C8.toInt()) { shifted = !shifted; refreshKeys(root) }, weight(1.15f))
+            if (index == 2) line.addView(makeKey("⇧", 0xFF7560C8.toInt()) { shifted = !shifted; setInputView(onCreateInputView()) }, weight(1.15f))
             row.forEach { character ->
                 line.addView(makeKey(character.toString(), 0xFF303346.toInt()) {
                     val value = if (shifted) character.uppercaseChar().toString() else character.toString()
                     currentInputConnection?.commitText(value, 1)
-                    if (shifted) { shifted = false; refreshKeys(root) }
+                    if (shifted) { shifted = false; setInputView(onCreateInputView()) }
                 }, weight(1f))
             }
             if (index == 2) line.addView(makeKey("⌫", 0xFF7560C8.toInt()) {
@@ -103,11 +103,6 @@ class NexKeyInputMethodService : InputMethodService() {
         bottom.addView(makeKey("↵", 0xFF7560C8.toInt()) { currentInputConnection?.commitText("\\n", 1) }, weight(1.3f))
         root.addView(bottom)
         return root
-    }
-
-    private fun refreshKeys(root: LinearLayout) {
-        // Shift state is applied to the next committed character; the next view rebuild reflects it.
-        root.invalidate()
     }
 
     private fun makeKey(label: String, color: Int, action: () -> Unit): Button =
