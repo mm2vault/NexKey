@@ -18,7 +18,8 @@ The React Native app includes a live keyboard preview and an editable Theme Stud
 - Suggestions and on-device typing preferences
 - Optional AI writing tools with explicit consent
 - Free and Premium tiers
-- In-app OTA update check/download/restart flow (EAS project configuration and publishing still required)\n- Store/installer updates for native keyboard engine changes
+- In-app OTA update check/download/restart flow (EAS project configuration and publishing still required) 
+- Store/installer updates for native keyboard engine changes
 
 ## Run the app
 
