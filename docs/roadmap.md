@@ -7,19 +7,24 @@
 - [ ] Run dependency install, typecheck and device build
 
 ## Phase 1 — Real keyboard
-- [x] Add Android Kotlin InputMethodService generation through Expo config plugin\n- [ ] Build, install and test Android IME on a physical device\n- [ ] Add guided enable/select keyboard onboarding
-- [ ] Android language/subtype configuration
+- [x] Add Android Kotlin InputMethodService generation through Expo config plugin
+- [ ] Build, install and test Android IME on a physical device
+- [ ] Add guided enable/select keyboard onboarding
+- [x] Declare initial Android language subtypes (English, Turkish, Azerbaijani)
 - [ ] iOS Custom Keyboard Extension target
 - [ ] Enable/disable instructions and platform testing
 
 ## Phase 2 — Theme Studio
-- [ ] Editable colors, key shapes, font and spacing
+- [x] Editable HEX colors in the app preview
+- [x] Adjustable key corner radius
+- [x] Save custom theme locally on the device
 - [ ] Photo backgrounds and asset picker
-- [ ] Save, duplicate, import and export themes
+- [ ] Font and spacing controls
+- [ ] Duplicate, import and export themes
 - [ ] Apply saved theme to native keyboards
 
 ## Phase 3 — Typing features
-- [ ] Turkish, Azerbaijani and English layouts
+- [ ] Turkish, Azerbaijani and English native layouts
 - [ ] Suggestions and personal dictionary
 - [ ] Emoji/symbol and number rows
 - [ ] Haptics, sound and accessibility controls
