@@ -7,7 +7,7 @@
 - [ ] Run dependency install, typecheck and device build
 
 ## Phase 1 — Real keyboard
-- [ ] Android Kotlin InputMethodService and settings entry
+- [x] Add Android Kotlin InputMethodService generation through Expo config plugin\n- [ ] Build, install and test Android IME on a physical device\n- [ ] Add guided enable/select keyboard onboarding
 - [ ] Android language/subtype configuration
 - [ ] iOS Custom Keyboard Extension target
 - [ ] Enable/disable instructions and platform testing
