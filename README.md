@@ -6,11 +6,11 @@ NexKey is being built as a privacy-first keyboard platform with a shared app exp
 
 ## Project status
 
-This repository currently contains the first application scaffold and product architecture. The React Native app is the shared control center; it is **not yet a working system keyboard**. Native Android IME and iOS keyboard-extension targets still need to be implemented and tested on their respective platforms.
+The repository contains a React Native app scaffold, an Expo config plugin that generates a first Android InputMethodService prototype, and the initial product architecture. The Android keyboard is an early development prototype and has not yet been built or device-tested. The iOS keyboard extension remains to be implemented.
 
 ## Planned capabilities
 
-- Android and iOS keyboard extensions
+- Android InputMethodService prototype (early; build/device testing pending)\n- iOS keyboard extension (planned)
 - Theme Studio: colors, key shapes, typography, spacing and image backgrounds
 - Theme preview, save, import/export and community sharing
 - Turkish, Azerbaijani, English and additional languages
