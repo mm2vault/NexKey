@@ -71,7 +71,7 @@ export function HomeScreen({ theme, themeName, goTo }: Props) {
               <Text style={[type.label, { color: c.text, marginTop: space.md }]}>{item.title}</Text>
               <Text style={[type.caption, { color: c.textMuted, marginTop: 3 }]}>{item.sub}</Text>
               <View style={styles.cardArrow}>
-                <Icon name="arrow-right" size={15} color={c.primary} />
+                <Icon name="chevron" size={15} color={c.primary} />
               </View>
             </Press>
           ))}
