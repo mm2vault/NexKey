@@ -15,10 +15,10 @@ The NexKey app is linked to the Expo project owned by `eleddin01`. Its EAS proje
 To publish manually, authenticate with EAS and run:
 
 ```bash
-eas update --channel preview --message "Preview release notes"
+eas update --branch preview --message "Preview release notes"
 ```
 
-Use `--channel production` for the production channel. The GitHub workflow requires an `EXPO_TOKEN` repository secret; never commit or share the token.
+Use `--branch production` for the production branch, which is served to builds configured for the production channel. The GitHub workflow requires an `EXPO_TOKEN` repository secret; never commit or share the token.
 
 ## Native updates
 
