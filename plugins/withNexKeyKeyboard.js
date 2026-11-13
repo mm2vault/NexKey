@@ -353,7 +353,7 @@ class NexKeyInputMethodService : InputMethodService() {
 
     private fun brandBar(p: Palette): TextView =
         TextView(this).apply {
-            text = "NEXKEY  ·  ${language.uppercase()}"
+            text = "NEXKEY  ·  \${language.uppercase()}"
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
             letterSpacing = 0.3f
             typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
