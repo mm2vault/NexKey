@@ -26,8 +26,8 @@
 ## Phase 3 — Typing features
 - [ ] Turkish, Azerbaijani and English native layouts
 - [ ] Suggestions and personal dictionary
-- [ ] Emoji/symbol and number rows
-- [ ] Haptics, sound and accessibility controls
+- [x] Basic number/symbol layout toggle
+- [ ] Emoji keyboard, haptics, sound and accessibility controls
 
 ## Phase 4 — Product services
 - [ ] Accounts and cloud backup (opt-in)
