@@ -256,7 +256,7 @@ class NexKeyInputMethodService : InputMethodService() {
     private fun deleteBackward() {
         val connection = currentInputConnection ?: return
         if (connection.getSelectedText(0).isNullOrEmpty()) {
-            connection.deleteSurroundingText(1, 0)
+            connection.deleteSurroundingTextInCodePoints(1, 0)
         } else {
             connection.commitText("", 1)
         }
