@@ -61,7 +61,7 @@ function withNexKeyKeyboard(config) {
       if (packageLine) source = source.replace(packageLine[0], packageLine[0] + '\n\n' + importLine);
     }
     if (!source.includes('add(NexKeyKeyboardPackage())')) {
-      source = source.replace(/(PackageList\\(this\\)\\.packages\\.apply\\s*\\{)/, '$1\\n              add(NexKeyKeyboardPackage())');
+      source = source.replace(/(PackageList\(this\)\.packages\.apply\s*\{)/, '$1\n              add(NexKeyKeyboardPackage())');
     }
     if (!source.includes('add(NexKeyKeyboardPackage())')) {
       throw new Error('NexKey: Could not register NexKeyKeyboardPackage in MainApplication.');
