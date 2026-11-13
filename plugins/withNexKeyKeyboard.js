@@ -244,7 +244,7 @@ class NexKeyInputMethodService : InputMethodService() {
                 ) {
                     currentInputConnection?.performEditorAction(action)
                 } else {
-                    currentInputConnection?.commitText("\\n", 1)
+                    currentInputConnection?.commitText("\n", 1)
                 }
             },
             weight(1.4f)
