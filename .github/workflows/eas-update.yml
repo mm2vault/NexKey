@@ -15,6 +15,9 @@ on:
         type: string
         default: "NexKey update"
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     name: Publish EAS OTA update
@@ -27,6 +30,8 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Publish update
-        run: npx eas-cli@latest update --channel "${{ inputs.channel }}" --message "${{ inputs.message }}" --non-interactive
+        run: npx eas-cli@latest update --channel "$UPDATE_CHANNEL" --message "$RELEASE_MESSAGE" --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          UPDATE_CHANNEL: ${{ inputs.channel }}
+          RELEASE_MESSAGE: ${{ inputs.message }}
