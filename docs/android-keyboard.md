@@ -22,4 +22,4 @@ Menu labels vary by Android manufacturer.
 
 This is the first real InputMethodService implementation, not a release-ready keyboard. It currently supports basic character insertion, a number/symbol layout toggle, shift, space, period, editor action / enter and backspace. It does not yet provide full language-specific layouts, predictive suggestions, emoji browsing, theme synchronization, accessibility polish or device-tested reliability.
 
-The keyboard does not request network access or send typed text to a server. Do not enter sensitive information into an untested development keyboard.
+The keyboard implementation contains no code that uploads typed text. The host app may still have network permissions for Expo or update-related features; verify the final merged Android manifest and perform a privacy review before release. Do not enter sensitive information into an untested development keyboard.
