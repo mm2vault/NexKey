@@ -58,7 +58,7 @@ function withNexKeyKeyboard(config) {
     const importLine = 'import ' + (config.android?.package || 'com.mm2vault.nexkey') + '.keyboard.NexKeyKeyboardPackage';
     if (!source.includes(importLine)) {
       const packageLine = source.match(/^package .*$/m);
-      if (packageLine) source = source.replace(packageLine[0], packageLine[0] + '\\n\\n' + importLine);
+      if (packageLine) source = source.replace(packageLine[0], packageLine[0] + '\n\n' + importLine);
     }
     if (!source.includes('add(NexKeyKeyboardPackage())')) {
       source = source.replace(/(PackageList\\(this\\)\\.packages\\.apply\\s*\\{)/, '$1\\n              add(NexKeyKeyboardPackage())');
@@ -238,35 +238,6 @@ class NexKeyInputMethodService : InputMethodService() {
         val g = (Color.green(from) * (1f - ratio) + Color.green(to) * ratio).toInt()
         val b = (Color.blue(from) * (1f - ratio) + Color.blue(to) * ratio).toInt()
         return Color.rgb(r, g, b)
-    }
-            Palette(
-                background = 0xFF14151D.toInt(),
-                key = 0xFF2A2C3B.toInt(),
-                keyPressed = 0xFF3C3F55.toInt(),
-                fn = 0xFF1F2130.toInt(),
-                fnPressed = 0xFF33364A.toInt(),
-                edge = 0xFF0C0D13.toInt(),
-                accent = 0xFF8B6CF0.toInt(),
-                accentPressed = 0xFF7556DC.toInt(),
-                text = 0xFFF5F5FA.toInt(),
-                onAccent = Color.WHITE,
-                hint = 0xFF8D91A6.toInt()
-            )
-        } else {
-            Palette(
-                background = 0xFFE7E7F0.toInt(),
-                key = 0xFFFFFFFF.toInt(),
-                keyPressed = 0xFFD9D9E8.toInt(),
-                fn = 0xFFD2D3E2.toInt(),
-                fnPressed = 0xFFC1C2D6.toInt(),
-                edge = 0xFFB4B5C8.toInt(),
-                accent = 0xFF6C4AE0.toInt(),
-                accentPressed = 0xFF5A3BC4.toInt(),
-                text = 0xFF14141C.toInt(),
-                onAccent = Color.WHITE,
-                hint = 0xFF5D6074.toInt()
-            )
-        }
     }
 
     override fun onCreateInputView(): View {
