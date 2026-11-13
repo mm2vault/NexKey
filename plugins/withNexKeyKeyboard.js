@@ -388,7 +388,7 @@ class NexKeyInputMethodService : InputMethodService() {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(24))
             isClickable = true
             contentDescription = "Switch keyboard language"
-            setOnClickListener { switchToNextInputMethod(false) }
+            setOnClickListener { switchToNextInputMethod(true) }
         }
 
     private fun keyRadius(): Int {
