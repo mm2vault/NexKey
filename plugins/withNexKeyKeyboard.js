@@ -153,7 +153,7 @@ class NexKeyKeyboardPackage : ReactPackage {
 function kotlinSource(packageName) {
   return `package ${packageName}.keyboard
 
-import android.content.res.Configuration
+import android.content.Context\nimport android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
