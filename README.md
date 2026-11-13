@@ -40,4 +40,4 @@ For native development builds, use the platform-specific Expo / React Native too
 - Android app updates should be delivered through Google Play or the chosen trusted distribution channel. iOS updates are distributed through the App Store. NexKey will not silently install APKs or bypass store controls.
 - Typing content must not be transmitted to NexKey servers by default. Remote AI features will require clear opt-in.
 
-See [Architecture](docs/architecture.md), [Privacy](docs/privacy.md), [Roadmap](docs/roadmap.md), [in-app updates](docs/in-app-updates.md) and the [EAS setup guide](docs/eas-setup.md).
+See [Design system](docs/design-system.md), [Architecture](docs/architecture.md), [Privacy](docs/privacy.md), [Roadmap](docs/roadmap.md), [in-app updates](docs/in-app-updates.md) and the [EAS setup guide](docs/eas-setup.md).

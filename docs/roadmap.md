@@ -3,6 +3,7 @@
 ## Phase 0 — Foundation (in progress)
 - [x] Create repository and shared React Native app scaffold
 - [x] Establish initial dark visual system and keyboard preview
+- [x] Premium UI redesign: shared design system, dark/light appearance, redesigned screens and keyboard (see design-system.md)
 - [x] Document native architecture and privacy requirements
 - [ ] Run dependency install, typecheck and device build
 
