@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Alert, NativeModules, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Updates from 'expo-updates';
 import { themes, type KeyboardTheme } from './src/theme/presets';
@@ -80,6 +80,15 @@ function NexKeyApp() {
       }
     }).catch(() => {}).finally(() => setLoaded(true));
   }, []);
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+    const keyboardBridge = NativeModules.NexKeyKeyboard as
+      | { setTheme: (themeJson: string) => Promise<boolean> }
+      | undefined;
+    if (!keyboardBridge?.setTheme) return;
+    keyboardBridge.setTheme(JSON.stringify(theme)).catch(() => {});
+  }, [theme.background, theme.key, theme.text, theme.accent, theme.radius]);
 
   const choosePreset = (index: number) => {
     setSelectedTheme(index);
