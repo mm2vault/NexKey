@@ -20,6 +20,6 @@ Menu labels vary by Android manufacturer.
 
 ## Prototype limitations
 
-This is the first real InputMethodService implementation, not a release-ready keyboard. It currently supports basic character insertion, space, period, enter, backspace and a simple shift state. The next work includes proper shift redraw, number/symbol layouts, language-specific layouts, suggestions, accessibility, theme persistence and device testing.
+This is the first real InputMethodService implementation, not a release-ready keyboard. It currently supports basic character insertion, a number/symbol layout toggle, shift, space, period, editor action / enter and backspace. It does not yet provide full language-specific layouts, predictive suggestions, emoji browsing, theme synchronization, accessibility polish or device-tested reliability.
 
 The keyboard does not request network access or send typed text to a server. Do not enter sensitive information into an untested development keyboard.
