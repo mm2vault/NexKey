@@ -67,6 +67,7 @@ import android.widget.LinearLayout
  */
 class NexKeyInputMethodService : InputMethodService() {
     private var shifted = false
+    private var symbols = false
     private val rows = listOf("qwertyuiop", "asdfghjkl", "zxcvbnm")
 
     override fun onCreateInputView(): View {
@@ -76,31 +77,61 @@ class NexKeyInputMethodService : InputMethodService() {
             setBackgroundColor(Color.rgb(18, 20, 31))
         }
 
-        rows.forEachIndexed { index, row ->
+        val activeRows = if (symbols) {
+            listOf("1234567890", "@#$%&*-+()", "!?:;_+=/")
+        } else {
+            rows
+        }
+
+        activeRows.forEachIndexed { index, row ->
             val line = LinearLayout(this).apply {
                 gravity = Gravity.CENTER
                 orientation = LinearLayout.HORIZONTAL
             }
-            if (index == 2) line.addView(makeKey("⇧", 0xFF7560C8.toInt()) { shifted = !shifted; setInputView(onCreateInputView()) }, weight(1.15f))
+            if (!symbols && index == 2) {
+                line.addView(makeKey("⇧", 0xFF7560C8.toInt()) {
+                    shifted = !shifted
+                    setInputView(onCreateInputView())
+                }, weight(1.15f))
+            }
             row.forEach { character ->
                 line.addView(makeKey(character.toString(), 0xFF303346.toInt()) {
-                    val value = if (shifted) character.uppercaseChar().toString() else character.toString()
+                    val value = if (!symbols && shifted) character.uppercaseChar().toString() else character.toString()
                     currentInputConnection?.commitText(value, 1)
-                    if (shifted) { shifted = false; setInputView(onCreateInputView()) }
+                    if (shifted) {
+                        shifted = false
+                        setInputView(onCreateInputView())
+                    }
                 }, weight(1f))
             }
-            if (index == 2) line.addView(makeKey("⌫", 0xFF7560C8.toInt()) {
-                currentInputConnection?.deleteSurroundingText(1, 0)
-            }, weight(1.15f))
+            if (index == 2) {
+                line.addView(makeKey("⌫", 0xFF7560C8.toInt()) {
+                    currentInputConnection?.deleteSurroundingText(1, 0)
+                }, weight(1.15f))
+            }
             root.addView(line)
         }
 
         val bottom = LinearLayout(this).apply { gravity = Gravity.CENTER; orientation = LinearLayout.HORIZONTAL }
-        bottom.addView(makeKey("?123", 0xFF303346.toInt()) { currentInputConnection?.commitText("123", 1) }, weight(1.3f))
+        bottom.addView(makeKey(if (symbols) "ABC" else "?123", 0xFF303346.toInt()) {
+            symbols = !symbols
+            shifted = false
+            setInputView(onCreateInputView())
+        }, weight(1.3f))
         bottom.addView(makeKey("☺", 0xFF303346.toInt()) { currentInputConnection?.commitText("☺", 1) }, weight(1f))
-        bottom.addView(makeKey("English", 0xFF303346.toInt()) { currentInputConnection?.commitText(" ", 1) }, weight(4.2f))
+        bottom.addView(makeKey("space", 0xFF303346.toInt()) { currentInputConnection?.commitText(" ", 1) }, weight(4.2f))
         bottom.addView(makeKey(".", 0xFF303346.toInt()) { currentInputConnection?.commitText(".", 1) }, weight(1f))
-        bottom.addView(makeKey("↵", 0xFF7560C8.toInt()) { currentInputConnection?.commitText("\\n", 1) }, weight(1.3f))
+        bottom.addView(makeKey("↵", 0xFF7560C8.toInt()) {
+            val action = currentInputEditorInfo?.imeOptions?.and(android.view.inputmethod.EditorInfo.IME_MASK_ACTION)
+                ?: android.view.inputmethod.EditorInfo.IME_ACTION_NONE
+            if (action != android.view.inputmethod.EditorInfo.IME_ACTION_NONE &&
+                action != android.view.inputmethod.EditorInfo.IME_ACTION_UNSPECIFIED
+            ) {
+                currentInputConnection?.performEditorAction(action)
+            } else {
+                currentInputConnection?.commitText("\n", 1)
+            }
+        }, weight(1.3f))
         root.addView(bottom)
         return root
     }
