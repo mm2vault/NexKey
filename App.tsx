@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Alert, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Updates from 'expo-updates';
-import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { KeyboardPreview } from './src/components/KeyboardPreview';
 import { themes, type KeyboardTheme } from './src/theme/presets';
 
@@ -134,7 +133,6 @@ export default function App() {
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" />
-      <ExpoStatusBar style="light" />
       <View style={styles.header}>
         <View><Text style={styles.wordmark}>NEX<Text style={styles.accent}>KEY</Text></Text><Text style={styles.tagline}>YOUR KEYS. YOUR STYLE.</Text></View>
         <View style={styles.premium}><Text style={styles.premiumText}>✦ PREMIUM</Text></View>
