@@ -240,6 +240,11 @@ class NexKeyInputMethodService : InputMethodService() {
         return Color.rgb(r, g, b)
     }
 
+    override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
+        super.onStartInputView(info, restarting)
+        setInputView(onCreateInputView())
+    }
+
     override fun onCreateInputView(): View {
         val p = palette()
         val root = LinearLayout(this).apply {
@@ -358,9 +363,19 @@ class NexKeyInputMethodService : InputMethodService() {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(24))
         }
 
+    private fun keyRadius(): Int {
+        val raw = getSharedPreferences("nexkey_keyboard", Context.MODE_PRIVATE)
+            .getString("theme_json", null) ?: return 9
+        return try {
+            JSONObject(raw).optInt("radius", 9).coerceIn(2, 22)
+        } catch (_: Exception) {
+            9
+        }
+    }
+
     private fun shape(color: Int) = GradientDrawable().apply {
         setColor(color)
-        cornerRadius = dp(9).toFloat()
+        cornerRadius = dp(keyRadius()).toFloat()
     }
 
     /** A key face with a thin darker edge underneath, so keys feel raised. */
