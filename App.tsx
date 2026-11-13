@@ -16,6 +16,9 @@ const colorFields: { key: 'background' | 'key' | 'text' | 'accent'; label: strin
   { key: 'accent', label: 'Accent color' },
 ];
 
+const isHexColor = (value: unknown): value is string =>
+  typeof value === 'string' && /^#[0-9A-Fa-f]{6}$/.test(value);
+
 export default function App() {
   const [tab, setTab] = useState<Tab>('Home');
   const [selectedTheme, setSelectedTheme] = useState(0);
@@ -24,14 +27,34 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [updateBusy, setUpdateBusy] = useState(false);
   const [updateMessage, setUpdateMessage] = useState('Tap below to check for an update.');
-  const theme = hasCustomTheme ? customTheme : themes[selectedTheme];
+  const theme: KeyboardTheme = hasCustomTheme
+    ? {
+        ...customTheme,
+        background: isHexColor(customTheme.background) ? customTheme.background : themes[selectedTheme].background,
+        key: isHexColor(customTheme.key) ? customTheme.key : themes[selectedTheme].key,
+        text: isHexColor(customTheme.text) ? customTheme.text : themes[selectedTheme].text,
+        accent: isHexColor(customTheme.accent) ? customTheme.accent : themes[selectedTheme].accent,
+        radius: Number.isFinite(customTheme.radius)
+          ? Math.min(22, Math.max(0, customTheme.radius))
+          : themes[selectedTheme].radius,
+      }
+    : themes[selectedTheme];
 
   useEffect(() => {
     AsyncStorage.getItem(STORAGE_KEY).then((value) => {
       if (value) {
-        const parsed = JSON.parse(value) as KeyboardTheme;
-        if (parsed && typeof parsed.background === 'string' && typeof parsed.key === 'string') {
-          setCustomTheme(parsed);
+        const parsed = JSON.parse(value) as Partial<KeyboardTheme>;
+        const validTheme =
+          isHexColor(parsed.background) &&
+          isHexColor(parsed.key) &&
+          isHexColor(parsed.text) &&
+          isHexColor(parsed.accent) &&
+          typeof parsed.radius === 'number' &&
+          Number.isFinite(parsed.radius) &&
+          parsed.radius >= 0 &&
+          parsed.radius <= 22;
+        if (validTheme) {
+          setCustomTheme({ ...themes[0], ...parsed } as KeyboardTheme);
           setHasCustomTheme(true);
         }
       }
@@ -50,7 +73,7 @@ export default function App() {
   };
 
   const saveTheme = async () => {
-    const valid = colorFields.every(({ key }) => /^#[0-9A-Fa-f]{6}$/.test(customTheme[key]));
+    const valid = colorFields.every(({ key }) => isHexColor(customTheme[key])) && Number.isFinite(customTheme.radius) && customTheme.radius >= 0 && customTheme.radius <= 22;
     if (!valid) {
       Alert.alert('Invalid color', 'Use a six-digit HEX color, for example #9B7BFF.');
       return;
