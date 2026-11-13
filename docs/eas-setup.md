@@ -22,10 +22,10 @@ The `preview` profile produces an installable APK. The `production` profile prod
 ## Publish an in-app update
 
 1. Open Actions → **Publish EAS Update** → **Run workflow**.
-2. Choose the matching channel: `preview` for preview builds or `production` for production builds.
+2. Choose the matching update branch: `preview` for preview builds or `production` for production builds.
 3. Enter a short release note and run it.
 
-Only compatible installed builds on the selected channel can receive that update through the NexKey Settings updater / Expo Updates.
+Only compatible installed builds whose channel is linked to the selected branch can receive that update through the NexKey Settings updater / Expo Updates.
 
 ## Important limits
 
