@@ -181,7 +181,24 @@ import android.widget.TextView
 class NexKeyInputMethodService : InputMethodService() {
     private var shifted = false
     private var symbols = false
-    private val rows = listOf("qwertyuiop", "asdfghjkl", "zxcvbnm")
+    private var language = "tr"
+
+    private fun letterRows(): List<String> = when (language) {
+        "az" -> listOf("qwertyuiopöğ", "asdfghjklıə", "zxcvbnmçş")
+        "tr" -> listOf("qwertyuıopğü", "asdfghjklşi", "zxcvbnmöç")
+        else -> listOf("qwertyuiop", "asdfghjkl", "zxcvbnm")
+    }
+
+    override fun onCurrentInputMethodSubtypeChanged(newSubtype: InputMethodSubtype) {
+        super.onCurrentInputMethodSubtypeChanged(newSubtype)
+        val locale = newSubtype.locale.lowercase()
+        language = when {
+            locale.startsWith("az") -> "az"
+            locale.startsWith("tr") -> "tr"
+            else -> "en"
+        }
+        setInputView(onCreateInputView())
+    }
 
     private class Palette(
         val background: Int,
@@ -258,7 +275,7 @@ class NexKeyInputMethodService : InputMethodService() {
         val activeRows = if (symbols) {
             listOf("1234567890", "@#$%&*-+()", "!?:;_+=/")
         } else {
-            rows
+            letterRows()
         }
 
         activeRows.forEachIndexed { index, row ->
