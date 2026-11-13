@@ -167,7 +167,7 @@ import android.view.Gravity
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.EditorInfo\nimport android.view.inputmethod.InputMethodSubtype
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -353,7 +353,7 @@ class NexKeyInputMethodService : InputMethodService() {
 
     private fun brandBar(p: Palette): TextView =
         TextView(this).apply {
-            text = "NEXKEY"
+            text = "NEXKEY  ·  ${language.uppercase()}"
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
             letterSpacing = 0.3f
             typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
@@ -361,6 +361,9 @@ class NexKeyInputMethodService : InputMethodService() {
             gravity = Gravity.CENTER_VERTICAL
             setPadding(dp(10), 0, 0, 0)
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(24))
+            isClickable = true
+            contentDescription = "Switch keyboard language"
+            setOnClickListener { switchToNextInputMethod(false) }
         }
 
     private fun keyRadius(): Int {
