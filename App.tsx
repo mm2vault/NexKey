@@ -64,7 +64,45 @@ export default function App() {
     }
   };
 
-  const checkForUpdates = async () => {\n    if (!Updates.isEnabled) {\n      setUpdateMessage('In-app updates are not configured for this build yet. A release channel and EAS project connection are required.');\n      return;\n    }\n    setUpdateBusy(true);\n    setUpdateMessage('Checking for updates…');\n    try {\n      const result = await Updates.checkForUpdateAsync();\n      if (!result.isAvailable) {\n        setUpdateMessage('You are using the latest available app update.');\n        return;\n      }\n      setUpdateMessage('Update found. Downloading…');\n      await Updates.fetchUpdateAsync();\n      Alert.alert('Update ready', 'NexKey has downloaded an update. Restart now to apply it?', [\n        { text: 'Later', style: 'cancel' },\n        { text: 'Restart now', onPress: () => { Updates.reloadAsync().catch(() => setUpdateMessage('Update downloaded, but the app could not restart. Please reopen it.')); } },\n      ]);\n      setUpdateMessage('Update downloaded and ready to apply.');\n    } catch (error) {\n      setUpdateMessage(error instanceof Error ? error.message : 'Could not check for updates.');\n    } finally {\n      setUpdateBusy(false);\n    }\n  };\n\n  const resetTheme = async () => {
+  const checkForUpdates = async () => {
+    if (!Updates.isEnabled) {
+      setUpdateMessage('In-app updates are not configured for this build yet. A release channel and EAS project connection are required.');
+      return;
+    }
+
+    setUpdateBusy(true);
+    setUpdateMessage('Checking for updates…');
+
+    try {
+      const result = await Updates.checkForUpdateAsync();
+      if (!result.isAvailable) {
+        setUpdateMessage('You are using the latest available app update.');
+        return;
+      }
+
+      setUpdateMessage('Update found. Downloading…');
+      await Updates.fetchUpdateAsync();
+
+      Alert.alert('Update ready', 'NexKey has downloaded an update. Restart now to apply it?', [
+        { text: 'Later', style: 'cancel' },
+        {
+          text: 'Restart now',
+          onPress: () => {
+            Updates.reloadAsync().catch(() => {
+              setUpdateMessage('Update downloaded, but the app could not restart. Please reopen it.');
+            });
+          },
+        },
+      ]);
+      setUpdateMessage('Update downloaded and ready to apply.');
+    } catch (error) {
+      setUpdateMessage(error instanceof Error ? error.message : 'Could not check for updates.');
+    } finally {
+      setUpdateBusy(false);
+    }
+  };
+
+  const resetTheme = async () => {
     try { await AsyncStorage.removeItem(STORAGE_KEY); } catch {}
     setCustomTheme(themes[selectedTheme]);
     setHasCustomTheme(false);
