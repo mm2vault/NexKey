@@ -10,7 +10,7 @@ The React Native app includes a live keyboard preview and an editable Theme Stud
 
 ## Planned capabilities
 
-- Android InputMethodService prototype (early; build/device testing pending)
+- Android InputMethodService prototype with letter and symbol layouts (build/device testing pending)
 - iOS keyboard extension (planned)
 - Theme Studio: editable colors and key shapes (implemented in app preview); typography, spacing and image backgrounds planned
 - Theme preview and local save (implemented); import/export and community sharing planned
@@ -18,7 +18,7 @@ The React Native app includes a live keyboard preview and an editable Theme Stud
 - Suggestions and on-device typing preferences
 - Optional AI writing tools with explicit consent
 - Free and Premium tiers
-- In-app OTA update check/download/restart flow (EAS project linking and publishing still required)
+- In-app OTA update check/download/restart flow (EAS project linked; channel publishing still pending)
 - EAS Build profiles and GitHub Actions workflows for APK builds and OTA publishing (Expo account/token setup required)
 - Store/installer updates for native keyboard engine changes
 
