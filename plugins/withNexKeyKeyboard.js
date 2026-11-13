@@ -181,6 +181,7 @@ import android.widget.TextView
 class NexKeyInputMethodService : InputMethodService() {
     private var shifted = false
     private var symbols = false
+    private var emojiMode = false
     private var language = "tr"
 
     private fun letterRows(): List<String> = when (language) {
@@ -272,10 +273,10 @@ class NexKeyInputMethodService : InputMethodService() {
 
         root.addView(brandBar(p))
 
-        val activeRows = if (symbols) {
-            listOf("1234567890", "@#$%&*-+()", "!?:;_+=/")
-        } else {
-            letterRows()
+        val activeRows = when {
+            symbols -> listOf("1234567890", "@#$%&*-+()", "!?:;_+=/")
+            emojiMode -> listOf("😀😁😂🤣😊😍🥰😘😎", "🥳😭😡👍👎🙏💜🔥✨", "🎉💙💚💛🖤🤍⭐🌈")
+            else -> letterRows()
         }
 
         activeRows.forEachIndexed { index, row ->
@@ -283,8 +284,8 @@ class NexKeyInputMethodService : InputMethodService() {
                 gravity = Gravity.CENTER
                 orientation = LinearLayout.HORIZONTAL
             }
-            if (!symbols && index == 1) line.addView(spacer(0.5f))
-            if (!symbols && index == 2) {
+            if (!symbols && !emojiMode && index == 1) line.addView(spacer(0.5f))
+            if (!symbols && !emojiMode && index == 2) {
                 line.addView(
                     iconKey(
                         "nexkey_ic_shift", "Shift",
@@ -298,12 +299,13 @@ class NexKeyInputMethodService : InputMethodService() {
                     weight(1.5f)
                 )
             }
-            row.forEach { character ->
-                val label = if (!symbols && shifted) character.uppercaseChar().toString() else character.toString()
+            row.codePoints().toArray().forEach { codePoint ->
+                val character = String(Character.toChars(codePoint))
+                val label = if (!symbols && !emojiMode && shifted) character.uppercase() else character
                 line.addView(
                     textKey(label, p.key, p.keyPressed, p.text, p) {
                         currentInputConnection?.commitText(label, 1)
-                        if (shifted) {
+                        if (shifted && !emojiMode) {
                             shifted = false
                             setInputView(onCreateInputView())
                         }
@@ -330,7 +332,12 @@ class NexKeyInputMethodService : InputMethodService() {
             weight(1.4f)
         )
         bottom.addView(
-            textKey("☺", p.fn, p.fnPressed, p.text, p, 18f) { currentInputConnection?.commitText("☺", 1) },
+            textKey(if (emojiMode) "ABC" else "☺", p.fn, p.fnPressed, p.text, p, 18f) {
+                emojiMode = !emojiMode
+                symbols = false
+                shifted = false
+                setInputView(onCreateInputView())
+            },
             weight(1f)
         )
         bottom.addView(
