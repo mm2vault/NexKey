@@ -15,4 +15,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install
+      - name: Validate config plugin syntax
+        run: node --check plugins/withNexKeyKeyboard.js
+      - name: Generate Android native project
+        run: npx expo prebuild --platform android --no-install
       - run: npm run typecheck
