@@ -33,7 +33,7 @@
 - [ ] Accounts and cloud backup (opt-in)
 - [ ] Community theme discovery and moderation
 - [ ] Free / Premium entitlements and store billing
-- [x] In-app update check/download/restart flow added (EAS project/channel configuration and release publishing pending)
+- [x] In-app update check/download/restart flow added (EAS project linked; channel publishing pending)
 - [ ] Version check, release notes and store update links
 
 ## Phase 5 — Release readiness
