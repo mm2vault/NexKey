@@ -1,4 +1,4 @@
-const { withAndroidManifest, withDangerousMod } = require('@expo/config-plugins');
+const { withAndroidManifest, withDangerousMod, withMainApplication } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
@@ -42,6 +42,34 @@ function withNexKeyKeyboard(config) {
     }
     return config;
   }]);
+  config = withDangerousMod(config, ['android', async (config) => {
+    const projectRoot = config.modRequest.platformProjectRoot;
+    const packageName = config.android?.package || 'com.mm2vault.nexkey';
+    const packagePath = packageName.replace(/\\./g, '/');
+    const javaRoot = path.join(projectRoot, 'app/src/main/java', packagePath, 'keyboard');
+    fs.mkdirSync(javaRoot, { recursive: true });
+    fs.writeFileSync(path.join(javaRoot, 'NexKeyKeyboardModule.kt'), nativeModuleSource(packageName));
+    fs.writeFileSync(path.join(javaRoot, 'NexKeyKeyboardPackage.kt'), nativePackageSource(packageName));
+    return config;
+  }]);
+
+  config = withMainApplication(config, (config) => {
+    let source = config.modResults.contents;
+    const importLine = 'import ' + (config.android?.package || 'com.mm2vault.nexkey') + '.keyboard.NexKeyKeyboardPackage';
+    if (!source.includes(importLine)) {
+      const packageLine = source.match(/^package .*$/m);
+      if (packageLine) source = source.replace(packageLine[0], packageLine[0] + '\\n\\n' + importLine);
+    }
+    if (!source.includes('add(NexKeyKeyboardPackage())')) {
+      source = source.replace(/(PackageList\\(this\\)\\.packages\\.apply\\s*\\{)/, '$1\\n              add(NexKeyKeyboardPackage())');
+    }
+    if (!source.includes('add(NexKeyKeyboardPackage())')) {
+      throw new Error('NexKey: Could not register NexKeyKeyboardPackage in MainApplication.');
+    }
+    config.modResults.contents = source;
+    return config;
+  });
+
   return config;
 }
 
@@ -75,6 +103,53 @@ function vectorXml(pathData) {
 `;
 }
 
+function nativeModuleSource(packageName) {
+  return `package ${packageName}.keyboard
+
+import android.content.Context
+import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
+
+class NexKeyKeyboardModule(context: ReactApplicationContext) : ReactContextBaseJavaModule(context) {
+    override fun getName() = "NexKeyKeyboard"
+
+    @ReactMethod
+    fun setTheme(themeJson: String, promise: Promise) {
+        try {
+            reactApplicationContext
+                .getSharedPreferences("nexkey_keyboard", Context.MODE_PRIVATE)
+                .edit()
+                .putString("theme_json", themeJson)
+                .apply()
+            promise.resolve(true)
+        } catch (error: Exception) {
+            promise.reject("NEXKEY_THEME_SAVE", error)
+        }
+    }
+}
+`;
+}
+
+function nativePackageSource(packageName) {
+  return `package ${packageName}.keyboard
+
+import com.facebook.react.ReactPackage
+import com.facebook.react.bridge.NativeModule
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.uimanager.ViewManager
+
+class NexKeyKeyboardPackage : ReactPackage {
+    override fun createNativeModules(context: ReactApplicationContext): List<NativeModule> =
+        listOf(NexKeyKeyboardModule(context))
+
+    override fun createViewManagers(context: ReactApplicationContext): List<ViewManager<*, *>> =
+        emptyList()
+}
+`;
+}
+
 function kotlinSource(packageName) {
   return `package ${packageName}.keyboard
 
@@ -83,7 +158,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.StateListDrawable
+import android.graphics.drawable.StateListDrawable\nimport org.json.JSONObject
 import android.inputmethodservice.InputMethodService
 import android.os.Handler
 import android.os.Looper
@@ -125,7 +200,45 @@ class NexKeyInputMethodService : InputMethodService() {
     private fun palette(): Palette {
         val night = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
             Configuration.UI_MODE_NIGHT_YES
-        return if (night) {
+        val fallback = if (night) {
+            Palette(0xFF090611.toInt(), 0xFF241A35.toInt(), 0xFF38234F.toInt(),
+                0xFF1A1028.toInt(), 0xFF302044.toInt(), 0xFF10091A.toInt(),
+                0xFF963CFF.toInt(), 0xFF7D2DE0.toInt(), 0xFFF7F0FF.toInt(),
+                Color.WHITE, 0xFFB8A6CC.toInt())
+        } else {
+            Palette(0xFFE9E5F0.toInt(), Color.WHITE, 0xFFDCD4EA.toInt(),
+                0xFFD9D1E5.toInt(), 0xFFC8BBDD.toInt(), 0xFFB8AFC6.toInt(),
+                0xFF7540D8.toInt(), 0xFF6130BF.toInt(), 0xFF21172D.toInt(),
+                Color.WHITE, 0xFF665A75.toInt())
+        }
+        val raw = getSharedPreferences("nexkey_keyboard", Context.MODE_PRIVATE)
+            .getString("theme_json", null) ?: return fallback
+        return try {
+            val json = JSONObject(raw)
+            fun color(key: String, default: Int): Int {
+                val value = json.optString(key, "")
+                return if (value.matches(Regex("^#[0-9A-Fa-f]{6}$"))) Color.parseColor(value) else default
+            }
+            val background = color("background", fallback.background)
+            val key = color("key", fallback.key)
+            val text = color("text", fallback.text)
+            val accent = color("accent", fallback.accent)
+            val pressed = blend(key, accent, 0.28f)
+            Palette(background, key, pressed, blend(background, key, 0.55f),
+                blend(background, accent, 0.45f), blend(background, Color.BLACK, 0.35f),
+                accent, blend(accent, Color.BLACK, 0.16f), text, Color.WHITE,
+                blend(text, background, 0.35f))
+        } catch (_: Exception) {
+            fallback
+        }
+    }
+
+    private fun blend(from: Int, to: Int, ratio: Float): Int {
+        val r = (Color.red(from) * (1f - ratio) + Color.red(to) * ratio).toInt()
+        val g = (Color.green(from) * (1f - ratio) + Color.green(to) * ratio).toInt()
+        val b = (Color.blue(from) * (1f - ratio) + Color.blue(to) * ratio).toInt()
+        return Color.rgb(r, g, b)
+    }
             Palette(
                 background = 0xFF14151D.toInt(),
                 key = 0xFF2A2C3B.toInt(),
