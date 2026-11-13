@@ -3,8 +3,8 @@ name: Publish EAS Update
 on:
   workflow_dispatch:
     inputs:
-      channel:
-        description: EAS update channel
+      branch:
+        description: EAS update branch (preview or production)
         required: true
         type: choice
         options: [preview, production]
@@ -30,8 +30,8 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Publish update
-        run: npx eas-cli@latest update --channel "$UPDATE_CHANNEL" --message "$RELEASE_MESSAGE" --non-interactive
+        run: npx eas-cli@latest update --branch "$UPDATE_BRANCH" --message "$RELEASE_MESSAGE" --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          UPDATE_CHANNEL: ${{ inputs.channel }}
+          UPDATE_BRANCH: ${{ inputs.branch }}
           RELEASE_MESSAGE: ${{ inputs.message }}
