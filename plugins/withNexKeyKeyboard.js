@@ -57,7 +57,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.View
-import android.view.inputmethod.InputConnection
 import android.widget.Button
 import android.widget.LinearLayout
 
@@ -129,7 +128,7 @@ class NexKeyInputMethodService : InputMethodService() {
             ) {
                 currentInputConnection?.performEditorAction(action)
             } else {
-                currentInputConnection?.commitText("\n", 1)
+                currentInputConnection?.commitText("\\n", 1)
             }
         }, weight(1.3f))
         root.addView(bottom)
