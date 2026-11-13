@@ -8,7 +8,7 @@ import { themes, type KeyboardTheme } from './src/theme/presets';
 
 type Tab = 'Home' | 'Studio' | 'Themes' | 'Settings';
 const STORAGE_KEY = 'nexkey.custom-theme.v1';
-const APP_VERSION = '0.3.0';
+const APP_VERSION = '0.3.1';
 const colorFields: { key: 'background' | 'key' | 'text' | 'accent'; label: string }[] = [
   { key: 'background', label: 'Background' },
   { key: 'key', label: 'Key color' },
