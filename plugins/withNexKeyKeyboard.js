@@ -313,7 +313,7 @@ class NexKeyInputMethodService : InputMethodService() {
                     weight(1f)
                 )
             }
-            if (!symbols && index == 1) line.addView(spacer(0.5f))
+            if (!symbols && !emojiMode && index == 1) line.addView(spacer(0.5f))
             if (index == 2) {
                 val backspace = iconKey("nexkey_ic_backspace", "Delete", p.fn, p.fnPressed, p.text, p) {}
                 attachRepeat(backspace) { deleteBackward() }
@@ -326,6 +326,7 @@ class NexKeyInputMethodService : InputMethodService() {
         bottom.addView(
             textKey(if (symbols) "ABC" else "?123", p.fn, p.fnPressed, p.text, p, 14f) {
                 symbols = !symbols
+                emojiMode = false
                 shifted = false
                 setInputView(onCreateInputView())
             },
