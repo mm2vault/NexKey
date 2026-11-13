@@ -19,4 +19,10 @@ jobs:
         run: node --check plugins/withNexKeyKeyboard.js
       - name: Generate Android native project
         run: npx expo prebuild --platform android --no-install
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile generated Android keyboard
+        run: cd android && ./gradlew :app:compileDebugKotlin
       - run: npm run typecheck
